@@ -51,7 +51,7 @@ const register = async (req, res, next) => {
     let token
     try {
         token = jwt.sign({
-            sellerId: createdSeller.id, email: createdSeller.email
+            sellerId: createdSeller.id, sellerEmail: createdSeller.email
         },
             process.env.JWT_KEY, { expiresIn: process.env.JWT_LIFETIME })
     } catch (err) {
@@ -107,7 +107,7 @@ const login = async (req, res, next) => {
     let token;
     try {
         token = jwt.sign(
-            { sellerId: existingSeller.id, email: existingSeller.email },
+            { sellerId: existingSeller.id, sellerEmail: existingSeller.email },
             process.env.JWT_KEY,
             { expiresIn: process.env.JWT_LIFETIME })
     } catch (err) {
@@ -125,6 +125,33 @@ const login = async (req, res, next) => {
     })
 }
 
+// https://i.guim.co.uk/img/media/b452c7440495801da603ef6adcccd36f6a544f6c/0_1181_2514_1509/master/2514.jpg?width=465&quality=45&auto=format&fit=max&dpr=2&s=d1019b5d8d708eaff62a727ba7dfb3b7"
+
+const createBook = async (req, res, next) => {
+    const { title, description, price, image } = req.body
+    const creator = req.seller.sellerId
+
+    if(!title || !description || !price || !image) {
+        const error = new BadRequestError("Please provide all values...")
+        return next(error)
+    }
+
+    const newBook = new Book({
+        title,
+        description,
+        image,
+        price,
+        creator
+    })
+    try {
+        await newBook.save()
+    } catch (err) {
+        const error = new InternalServerError("Unable to create book, Please try again..")
+        return next(error)
+    }
+    res.status(StatusCodes.CREATED).json({ book: newBook })
+}
 
 exports.register = register
 exports.login = login
+exports.createBook = createBook

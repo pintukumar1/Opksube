@@ -50,7 +50,7 @@ const register = async (req, res, next) => {
     let token
     try {
         token = jwt.sign({
-            customerId: createdCustomer.id, email: createdCustomer.email
+            customerId: createdCustomer.id, customerEmail: createdCustomer.email
         },
             process.env.JWT_KEY, { expiresIn: process.env.JWT_LIFETIME })
     } catch (err) {
@@ -106,7 +106,7 @@ const login = async (req, res, next) => {
     let token;
     try {
         token = jwt.sign(
-            { customerId: existingCustomer.id, email: existingCustomer.email },
+            { customerId: existingCustomer.id, customerEmail: existingCustomer.email },
             process.env.JWT_KEY,
             { expiresIn: process.env.JWT_LIFETIME })
     } catch (err) {

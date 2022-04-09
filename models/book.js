@@ -16,6 +16,11 @@ const bookSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true
+    }, 
+    creator: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "seller"
     }
 },
     { timestamps: true }

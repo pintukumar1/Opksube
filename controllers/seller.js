@@ -1,9 +1,10 @@
 const { StatusCodes } = require('http-status-codes')
-const User = require("../models/user")
+const Seller = require("../models/seller")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const { BadRequestError, InternalServerError, UnAuthenticatedError } = require("../errors")
+const Book = require('../models/book')
 
 const register = async (req, res, next) => {
     const { name, email, password } = req.body
@@ -13,15 +14,15 @@ const register = async (req, res, next) => {
         return next(error)
     }
 
-    let userAlreadyExists
+    let sellerAlreadyExists
     try {
-        userAlreadyExists = await User.findOne({ email: email })
+        sellerAlreadyExists = await Seller.findOne({ email: email })
     } catch (err) {
         const error = new InternalServerError("Signing Up failed,Please try again later.")
         return next(error)
     }
 
-    if (userAlreadyExists) {
+    if (sellerAlreadyExists) {
         const error = new BadRequestError("E-mail already in use.Please Login instead")
         return next(error)
     }
@@ -30,18 +31,18 @@ const register = async (req, res, next) => {
     try {
         hashedPassword = await bcrypt.hash(password, 12)
     } catch (err) {
-        const error = new InternalServerError("Could not create user.please try again.")
+        const error = new InternalServerError("Could not create seller.please try again.")
         return next(error)
     }
 
-    const createdUser = new User({
+    const createdSeller = new Seller({
         name: name,
         email: email,
         password: hashedPassword
     })
 
     try {
-        await createdUser.save()
+        await createdSeller.save()
     } catch (err) {
         const error = new InternalServerError("Signing Up failed, please try again.")
         return next(error)
@@ -50,7 +51,7 @@ const register = async (req, res, next) => {
     let token
     try {
         token = jwt.sign({
-            userId: createdUser.id, email: createdUser.email
+            sellerId: createdSeller.id, email: createdSeller.email
         },
             process.env.JWT_KEY, { expiresIn: process.env.JWT_LIFETIME })
     } catch (err) {
@@ -59,15 +60,14 @@ const register = async (req, res, next) => {
     }
 
     res.status(StatusCodes.CREATED).json({
-        user: {
-            id: createdUser.id,
-            name: createdUser.name,
-            email: createdUser.email
+        seller: {
+            id: createdSeller.id,
+            name: createdSeller.name,
+            email: createdSeller.email
         },
         token: token
     })
 }
-
 
 const login = async (req, res, next) => {
     const { email, password } = req.body
@@ -77,23 +77,23 @@ const login = async (req, res, next) => {
         return next(error)
     }
 
-    let existingUser
+    let existingSeller
     try {
-        existingUser = await User.findOne({ email: email })
+        existingSeller = await Seller.findOne({ email: email })
     }
     catch (err) {
         const error = new InternalServerError("Logging in failed, Please try again")
         return next(error)
     }
 
-    if (!existingUser) {
-        const error = new UnAuthenticatedError("Invalid credentials, user does not exist...")
+    if (!existingSeller) {
+        const error = new UnAuthenticatedError("Invalid credentials, seller does not exist...")
         return next(error)
     }
 
     let isMatch;
     try {
-        isMatch = await bcrypt.compare(password, existingUser.password)
+        isMatch = await bcrypt.compare(password, existingSeller.password)
     } catch (err) {
         const error = new InternalServerError("Could not log you in, Please check your credentials and try again..")
         return next(error)
@@ -107,7 +107,7 @@ const login = async (req, res, next) => {
     let token;
     try {
         token = jwt.sign(
-            { userId: existingUser.id, email: existingUser.email },
+            { sellerId: existingSeller.id, email: existingSeller.email },
             process.env.JWT_KEY,
             { expiresIn: process.env.JWT_LIFETIME })
     } catch (err) {
@@ -115,11 +115,11 @@ const login = async (req, res, next) => {
         return next(error)
     }
 
-    res.status(StatusCodes.CREATED).json({
-        user: {
-            id: existingUser.id,
-            email: existingUser.email,
-            name: existingUser.name
+    res.status(StatusCodes.OK).json({
+        seller: {
+            id: existingSeller.id,
+            email: existingSeller.email,
+            name: existingSeller.name
         },
         token: token
     })

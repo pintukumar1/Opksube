@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const customerSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -17,7 +17,13 @@ const userSchema = new Schema({
         required: true,
         minlength: 6
     },
+    booksBought: [
+        { 
+            type: mongoose.Types.ObjectId, 
+            ref: 'book' 
+        }
+    ]
 });
 
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Customer', customerSchema);

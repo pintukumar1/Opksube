@@ -1,0 +1,10 @@
+.book-item{
+    margin: 1rem;
+    text-align: center;
+}
+
+.book-item img{
+    position: relative;
+    height: 12rem;
+    width: auto;
+}

@@ -10,7 +10,6 @@ export const getBooksData = () => {
                 throw new Error("Could not fetch data..")
             }
             const data = await response.json()
-            console.log(data)
             return data;
         }
         try {

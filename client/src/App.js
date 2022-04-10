@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AllBooksPage from "./pages/AllBooksPage";
 import { getBooksData } from "./store/book-actions";
+import BookDetails from "./pages/BookDetails";
 
 const App = () => {
   const dispatch = useDispatch()
@@ -18,6 +19,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AllBooksPage books={books} totalBooks={total}/>} />
+        <Route path="/bookdetail/:bookid" element={<BookDetails/>} />
         <Route path="*" element={<h1>Error page!!!</h1>} />
       </Routes>
     </BrowserRouter>

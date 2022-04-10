@@ -1,10 +1,10 @@
 import React from 'react'
+import BookList from '../components/BookList/BookList'
 
 const allBooks = (props) => {
-    console.log(props.books)
     return (
         <div>
-            All books
+            <BookList books={props.books}/>
         </div>
     )
 }

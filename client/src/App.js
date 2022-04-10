@@ -1,17 +1,26 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux"
-import { bookActions } from "./store/book";
+import { useDispatch, useSelector } from "react-redux"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AllBooksPage from "./pages/AllBooksPage";
+import { getBooksData } from "./store/book-actions";
 
-function App() {
+const App = () => {
   const dispatch = useDispatch()
 
+  const books = useSelector(state => state.book.books)
+  const total = useSelector(state => state.book.totalBooks)
+
   useEffect(() => {
-    dispatch(bookActions.getBooks())
+    dispatch(getBooksData())
   }, [])
+
   return (
-    <div>
-      My App
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AllBooksPage books={books} totalBooks={total}/>} />
+        <Route path="*" element={<h1>Error page!!!</h1>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

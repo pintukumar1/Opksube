@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
 
 const initialAppState = {
-    books: []
+    books: [],
+    totalQuantity : 0
 }
 
 const bookSlice = createSlice({
     name: "book",
     initialState: initialAppState,
     reducers: {
-        getBooks() {
-            axios.get("/api/books/getbooks")
-                .then(response => { console.log(response) })
+        getItems(state, action) {
+            state.totalQuantity = action.payload.totalQuantity
+            state.books = action.payload.books
         }
     }
 })

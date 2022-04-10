@@ -19,7 +19,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AllBooksPage books={books} totalBooks={total}/>} />
-        <Route path="/bookdetail/:bookid" element={<BookDetails/>} />
+        <Route path="/bookdetails/:bookId" element={<BookDetails/>} />
         <Route path="*" element={<h1>Error page!!!</h1>} />
       </Routes>
     </BrowserRouter>

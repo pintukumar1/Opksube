@@ -1,6 +1,8 @@
 .book-item{
     margin: 1rem;
     text-align: center;
+    display: block;
+    flex-flow: row;
 }
 
 .book-item img{
@@ -8,3 +10,10 @@
     height: 12rem;
     width: auto;
 }
+
+.book-card {
+    height: fit-content;
+    width: fit-content;
+}
+
+

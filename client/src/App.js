@@ -6,6 +6,8 @@ import { getBooksData } from "./store/book-actions";
 import BookDetails from "./pages/BookDetails";
 import NewBook from "./pages/NewBook";
 import SellerAuth from "./pages/SellerAuth";
+import CustomerAuth from "./pages/CustomerAuth";
+import MainNavigation from "./components/Navigation/MainNavigation";
 
 const App = () => {
   const dispatch = useDispatch()
@@ -19,13 +21,17 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AllBooksPage books={books} totalBooks={total} />} />
-        <Route path="/bookdetails/:bookId" element={<BookDetails />} />
-        {/* <Route path="/add-book" element={<NewBook />} /> */}
-        <Route path="/seller-auth" element={<SellerAuth />} />
-        <Route path="*" element={<h1>Error page!!!</h1>} />
-      </Routes>
+      <MainNavigation />
+      <main className="content">
+        <Routes>
+          <Route path="/" element={<AllBooksPage books={books} totalBooks={total} />} />
+          <Route path="/bookdetails/:bookId" element={<BookDetails />} />
+          {/* <Route path="/add-book" element={<NewBook />} /> */}
+          <Route path="/seller-auth" element={<SellerAuth />} />
+          <Route path="/customer-auth" element={<CustomerAuth />} />
+          <Route path="*" element={<h1>Error page!!!</h1>} />
+        </Routes>
+      </main>
     </BrowserRouter>
   );
 }

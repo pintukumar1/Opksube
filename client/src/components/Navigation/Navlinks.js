@@ -1,60 +1,62 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { AuthContext } from '../../context/auth-context'
 import Button from '../FormElements/Button';
-import classes from './Navlinks.module.css'
+import './Navlinks.css'
 
 function Navlinks(props) {
-    const auth = useContext(AuthContext);
-
     return (
-        <ul className={classes['nav-links']}>
+        <ul className='nav-links'>
             <li>
                 <NavLink
                     to="/"
                     className={({ isActive }) =>
-                        isActive ? `${classes['active']}` : undefined
+                        isActive ? 'active' : undefined
                     }>
-                    ALL USERS
+                    ALL Books
                 </NavLink>
             </li>
-            {auth.isLoggedIn && <li >
+            <li >
                 <NavLink
-                    to={`/${auth.userId}/places`}
+                    // to={`/${auth.userId}/places`}
+                    to="/"
                     className={({ isActive }) =>
-                        isActive ? `${classes['active']}` : undefined
+                        isActive ? "active" : undefined
                     }>
-                    MY PLACES
+                    MY BOOKS
                 </NavLink>
             </li>
-            }
-            {auth.isLoggedIn && <li>
+            <li>
                 <NavLink
-                    to="/places/new"
+                    to="/"
                     className={({ isActive }) =>
-                        isActive ? `${classes['active']}` : undefined
+                        isActive ? "active" : undefined
                     }>
-                    ADD PLACE
+                    ADD BOOK
                 </NavLink>
             </li>
-            }
-            {!auth.isLoggedIn && <li>
+            <li>
                 <NavLink
-                    to="/auth"
+                    to="/seller-auth"
                     className={({ isActive }) =>
-                        isActive ? `${classes['active']}` : undefined
+                        isActive ? "active" : undefined
                     }>
-                    AUTHENTICATE
+                    SELLER AUTHENTICATION
                 </NavLink>
             </li>
-            }
-            {auth.isLoggedIn && <li>
-                <Button onClick={auth.logout}>
+            <li>
+                <NavLink
+                    to="/customer-auth"
+                    className={({ isActive }) =>
+                        isActive ? "active" : undefined
+                    }>
+                    CUSTOMER AUTHENTICATION
+                </NavLink>
+            </li>
+            <li>
+                <Button onClick={() => console.log("hello")}>
                     LOGOUT
                 </Button>
             </li>
-                
-            }
         </ul>
     )
 }

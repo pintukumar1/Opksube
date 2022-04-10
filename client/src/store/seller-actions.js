@@ -1,5 +1,15 @@
 import { sellerActions } from "./seller-slice"
 
+const addSellerToLocalStorage = ({ seller, token }) => {
+    localStorage.setItem("seller", seller)
+    localStorage.setItem("sellerToken", token)
+}
+
+const removeSellerFromLocalStorage = () => {
+    localStorage.removeItem("seller")
+    localStorage.removeItem("sellerToken")
+}
+
 export const registerSellerData = (currentSeller) => {
     return async (dispatch) => {
         const signupSeller = async () => {
@@ -20,10 +30,12 @@ export const registerSellerData = (currentSeller) => {
         }
         try {
             const sellerData = await signupSeller()
+            const { seller, token } = sellerData
             dispatch(sellerActions.register({
-                seller: sellerData.seller,
-                token: sellerData.token
+                seller: seller,
+                token: token
             }))
+            addSellerToLocalStorage({seller, token})
         } catch (err) {
             console.log(err)
         }
@@ -48,10 +60,13 @@ export const loginSellerData = (currentSeller) => {
         }
         try {
             const sellerData = await loginSeller()
+            console.log(sellerData)
+            const { seller, token } = sellerData
             dispatch(sellerActions.login({
-                seller: sellerData.seller,
-                token: sellerData.token
+                seller: seller,
+                token: token
             }))
+            addSellerToLocalStorage({seller, token})
         } catch (err) {
             console.log(err)
         }

@@ -28,13 +28,12 @@ const SellerAuth = () => {
         } else {
             dispatch(registerSellerData(dataForRegister))
         }
-        navigate("/")
     };
 
     return (
         <div>
             <form className="seller-auth" onSubmit={sellerAuthHandler}>
-                <h2 style={{ textAlign: "center" }}>Login</h2>
+                <h2 style={{ textAlign: "center" }}>Seller Authentication</h2>
                 {!isMember && <Input
                     id="name"
                     element="input"

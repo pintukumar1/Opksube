@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/FormElements/Button'
 import Input from '../components/FormElements/Input'
-import { registerCustomerData, loginCustomerData } from "../store/customer-actions"
-import { useDispatch } from "react-redux"
+import { registerCustomerData, loginCustomerData } from "../store/app-actions"
+import { useDispatch, useSelector } from "react-redux"
 
 const CustomerAuth = () => {
     const dispatch = useDispatch()
+    const customer = useSelector(state => state.app.customer)
     const [isMember, setMember] = useState(true)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -29,6 +30,14 @@ const CustomerAuth = () => {
             dispatch(registerCustomerData(dataForRegister))
         }
     };
+
+    useEffect(() => {
+        if(customer) {
+            setTimeout(() => {
+                navigate("/")
+            }, 3000)
+        }
+    }, [customer, navigate])
 
     return (
         <div>

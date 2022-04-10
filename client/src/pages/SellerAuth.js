@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/FormElements/Button'
 import Input from '../components/FormElements/Input'
-import { registerSellerData, loginSellerData } from "../store/seller-actions"
-import { useDispatch } from "react-redux"
+import { registerSellerData, loginSellerData } from "../store/app-actions"
+import { useDispatch, useSelector } from "react-redux"
 
 const SellerAuth = () => {
     const dispatch = useDispatch()
+    const seller = useSelector(state => state.app.seller)
     const [isMember, setMember] = useState(true)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -29,6 +30,14 @@ const SellerAuth = () => {
             dispatch(registerSellerData(dataForRegister))
         }
     };
+
+    useEffect(() => {
+        if(seller) {
+            setTimeout(() => {
+                navigate("/")
+            }, 3000)
+        }
+    }, [seller, navigate])
 
     return (
         <div>

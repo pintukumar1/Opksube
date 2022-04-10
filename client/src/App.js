@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AllBooksPage from "./pages/AllBooksPage";
-import { getBooksData } from "./store/book-actions";
+import { getBooksData } from "./store/app-actions";
 import BookDetails from "./pages/BookDetails";
-import NewBook from "./pages/NewBook";
+// import NewBook from "./pages/NewBook";
 import SellerAuth from "./pages/SellerAuth";
 import CustomerAuth from "./pages/CustomerAuth";
 import MainNavigation from "./components/Navigation/MainNavigation";
@@ -12,8 +12,8 @@ import MainNavigation from "./components/Navigation/MainNavigation";
 const App = () => {
   const dispatch = useDispatch()
 
-  const books = useSelector(state => state.book.books)
-  const total = useSelector(state => state.book.totalBooks)
+  const books = useSelector(state => state.app.books)
+  const total = useSelector(state => state.app.totalQuantity)
 
   useEffect(() => {
     dispatch(getBooksData())

@@ -6,13 +6,11 @@ import Button from "../FormElements/Button"
 
 const BookItem = (props) => {
     return (
-        <li className="book-item">
+        <li className="bookitem">
             <Card className="book-card">
                 <div>
-                    <img src={props.image} alt="book-img" />
+                    <img src={props.image} alt="bookimg" />
                     <h4>{props.title}</h4>
-                    <h4>{props.price}</h4>
-                    <h4>{props.description}</h4>
                 </div>
                 <Link to={`/bookdetails/${props.id}`}>
                     <Button>View Details</Button>

@@ -1,17 +1,17 @@
-.book-item{
+.bookitem{
     margin: 1rem;
     text-align: center;
     display: block;
     flex-flow: row;
 }
 
-.book-item img{
+.bookitem img{
     position: relative;
     height: 12rem;
     width: auto;
 }
 
-.book-card {
+.bookcard {
     height: fit-content;
     width: fit-content;
 }

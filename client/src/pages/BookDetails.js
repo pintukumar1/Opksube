@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import Card from '../components/UIElements/Card'
+import "./BookDetails.css"
 import Button from '../components/FormElements/Button'
 
 const BookDetails = () => {

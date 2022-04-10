@@ -1,14 +1,12 @@
 .bookitem{
     margin: 1rem;
     text-align: center;
-    display: block;
-    flex-flow: row;
+    display: inline-block;
 }
 
 .bookitem img{
     position: relative;
     height: 12rem;
-    width: auto;
 }
 
 .bookcard {

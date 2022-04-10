@@ -170,3 +170,64 @@ export const logoutHandler = async () => {
         dispatch(appActions.logout())
     }
 }
+
+export const orderBookHandler = (userData, cusToken) => {
+    return async (dispatch) => {
+        const orderBook = async () => {
+            const response = await fetch("/api/customer/orderbook", {
+                method: "POST",
+                body: JSON.stringify(userData),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + cusToken
+                }
+            })
+            if (!response.ok) {
+                throw new Error("creating order failed....")
+            }
+            const data = response.json()
+            console.log(data)
+            return data
+        }
+        try {
+            const orderData = await orderBook()
+            const { order } = orderData
+            dispatch(appActions.orderBook({
+                orders: order
+            }))
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}
+
+
+export const createBookHandler = (formData, sellerToken) => {
+    return async (dispatch) => {
+        const createBook = async () => {
+            const response = await fetch("/api/seller/createbook", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + sellerToken
+                }
+            })
+            if (!response.ok) {
+                throw new Error("creating book failed....")
+            }
+            const data = response.json()
+            console.log(data)
+            return data
+        }
+        try {
+            const bookData = await createBook()
+            const { book } = bookData
+            dispatch(appActions.orderBook({
+                books: book
+            }))
+        } catch (err) {
+            console.log(err)
+        }
+    }
+}

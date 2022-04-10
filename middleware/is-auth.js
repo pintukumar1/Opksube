@@ -36,6 +36,6 @@ const verifyCustomer = (req, res, next) => {
         throw new UnAuthenticatedError("Authentication failed...")
     }
 }
-
+    
 exports.verifySeller = verifySeller
 exports.verifyCustomer = verifyCustomer

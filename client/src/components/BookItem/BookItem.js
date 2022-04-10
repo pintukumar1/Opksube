@@ -7,7 +7,7 @@ import Button from "../FormElements/Button"
 const BookItem = (props) => {
     return (
         <li className="bookitem">
-            <Card className="book-card">
+            <Card className="bookcard">
                 <div>
                     <img src={props.image} alt="bookimg" />
                     <h4>{props.title}</h4>

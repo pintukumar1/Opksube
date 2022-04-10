@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const { BadRequestError, InternalServerError, UnAuthenticatedError } = require("../errors")
+const Order = require('../models/order')
+const Book = require("../models/book")
 
 const register = async (req, res, next) => {
     const { name, email, password } = req.body
@@ -124,5 +126,40 @@ const login = async (req, res, next) => {
     })
 }
 
+const orderBook = async (req, res, next) => {
+    const { name, email, contactNumber, address, pinCode, bookId } = req.body
+    const orderedBy = req.customer.customerId
+    if (!name || !email || !contactNumber || !address || !pinCode) {
+        const error = new BadRequestError("please provide all values")
+        return next(error)
+    }
+
+    const newOrder = new Order({
+        name,
+        email,
+        contactNumber,
+        address,
+        pinCode,
+        orderedBy,
+        bookId
+    })
+    try {
+        await newOrder.save()
+    } catch (err) {
+        const error = new InternalServerError("Could not create order,Please try again...")
+        return next(error)
+    }
+    try {
+        const book = await Book.findById(bookId)
+        await book.remove()
+    } catch (err) {
+        const error = new InternalServerError("could not delete book")
+        return next(error)
+    }
+
+    res.status(StatusCodes.CREATED).json({ msg: "Book ordered successfully & deleted from books db", order: newOrder })
+}
+
 exports.register = register
 exports.login = login
+exports.orderBook = orderBook

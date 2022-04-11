@@ -47,6 +47,16 @@ function Navlinks() {
             }
             {seller && <li>
                 <NavLink
+                    to="/seller-books"
+                    className={({ isActive }) =>
+                        isActive ? "active" : undefined
+                    }>
+                    YOUR BOOKS
+                </NavLink>
+            </li>
+            }
+            {seller && <li>
+                <NavLink
                     to="/add-book"
                     className={({ isActive }) =>
                         isActive ? "active" : undefined

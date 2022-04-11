@@ -151,9 +151,28 @@ const createBook = async (req, res, next) => {
         const error = new InternalServerError("Unable to create book, Please try again..")
         return next(error)
     }
-    res.status(StatusCodes.CREATED).json({ book: newBook })
+    res.status(StatusCodes.CREATED).json({ msg: "book created Successfully..." })
 }
+
+const getSoldBooksBySeller = async (req, res ,next) => {
+    const email = req.seller.sellerEmail
+    let seller, creator
+    try {
+        seller = await Seller.findOne({email: email})
+        .populate("books")
+        .populate("booksSold") 
+    } catch(err) {
+        const error = new InternalServerError("Could not fetch sold books..")
+        return next(error)
+    }
+    res.status(StatusCodes.OK).json({
+        books: seller.books,
+        booksSold: seller.booksSold
+    })
+}
+
 
 exports.register = register
 exports.login = login
 exports.createBook = createBook
+exports.getSoldBooksBySeller = getSoldBooksBySeller

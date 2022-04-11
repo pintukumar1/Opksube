@@ -10,6 +10,8 @@ import Order from "./pages/Order";
 import Landing from "./pages/Landing";
 import ErrorPage from "./pages/Error"
 import CustomerOrders from "./pages/CustomerOrders";
+import SellerBooks from "./pages/SellerBooks";
+
 
 const App = () => {
   return (
@@ -25,6 +27,7 @@ const App = () => {
           <Route path="/:bookId/order-book" element={<Order />} />
           <Route path="/seller-auth" element={<SellerAuth />} />
           <Route path="/customer-auth" element={<CustomerAuth />} />
+          <Route path="/seller-books" element={<SellerBooks />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </main>

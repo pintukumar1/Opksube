@@ -10,7 +10,7 @@ const getBooks = async (req, res, next) => {
         const error = new InternalServerError("Could not fetch books,Please try again...")
         return next(error)
     }
-    res.status(StatusCodes.OK).json({ books, totalBooks: books.length })
+    res.status(StatusCodes.OK).json({ books, totalBooks: books.length, msg: "fetched books successfully" })
 }
 
 const getBookDetails = async (req, res, next) => {

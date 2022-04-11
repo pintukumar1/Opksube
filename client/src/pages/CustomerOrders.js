@@ -12,13 +12,14 @@ const CustomerOrders = () => {
         dispatch(getCustomerOrders(customerToken))
     }, [customerToken])
 
-    if (orders.length === 0) {
+    if (orders && orders.length === 0) {
         return (
             <Card>
                 <h3>You haven't ordered anything till now, Please order something..</h3>
             </Card>
         )
     }
+    console.log(orders)
 
     return (
         <div>
@@ -26,7 +27,7 @@ const CustomerOrders = () => {
             {orders.map(order => (
                 <Card className="center" key={order._id}>
                     <h3>OrderID: {order._id}</h3>
-                    <h4>BookId: {order.bookId}</h4>
+                    <h4>OrderedBy: {order.orderedBy}</h4>
                 </Card>
             ))}
         </div>

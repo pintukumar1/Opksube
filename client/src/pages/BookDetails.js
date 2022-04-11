@@ -15,9 +15,7 @@ const BookDetails = () => {
             const response = await fetch(`/api/books/book/${bookId}`)
             const data = await response.json()
             setBook(data.book)
-        } catch (err) {
-            console.log(err)
-        }
+        } catch (err) {}
     }
 
     useEffect(() => {

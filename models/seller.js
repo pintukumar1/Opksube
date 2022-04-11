@@ -18,12 +18,19 @@ const sellerSchema = new Schema({
         minlength: 6
     },
 
-    books : [
-        { 
-            type: mongoose.Types.ObjectId ,  
-            ref: 'book' 
+    books: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'book'
         }
     ],
+
+    booksSold: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "book"
+        }
+    ]
 })
 
 

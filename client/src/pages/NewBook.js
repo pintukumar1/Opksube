@@ -3,14 +3,16 @@ import Input from '../components/FormElements/Input';
 import Button from '../components/FormElements/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrorHandler, createBookHandler } from "../store/app-actions"
-import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
+import Alert from '../components/Alert/Alert'
 import './NewBook.css';
+import { useNavigate } from 'react-router-dom';
 
 const NewBook = () => {
     const dispatch = useDispatch()
-    const errorText = useSelector(state => state.app.errorText)
+    const navigate = useNavigate()
+    const alertText = useSelector(state => state.app.alertText)
     const sellerToken = useSelector(state => state.app.sellerToken)
-    const showError = useSelector(state => state.app.showError)
+    const showAlert = useSelector(state => state.app.showAlert)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
@@ -25,7 +27,8 @@ const NewBook = () => {
 
     return (
         <div>
-            {showError && <ErrorAlert errorText={errorText} />}
+            {showAlert && <Alert alertText={alertText} />}
+            <h2>Create a new book</h2>
             <form className="bookform" onSubmit={placeSubmitHandler}>
                 <Input
                     id="title"

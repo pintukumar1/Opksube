@@ -4,13 +4,13 @@ import Button from '../components/FormElements/Button'
 import Input from '../components/FormElements/Input'
 import { registerSellerData, loginSellerData, clearErrorHandler } from "../store/app-actions"
 import { useDispatch, useSelector } from "react-redux"
-import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
+import Alert from '../components/Alert/Alert'
 
 const SellerAuth = () => {
     const dispatch = useDispatch()
     const seller = useSelector(state => state.app.seller)
-    const showError = useSelector(state => state.app.showError)
-    const errorText = useSelector(state => state.app.errorText)
+    const showAlert = useSelector(state => state.app.showAlert)
+    const alertText = useSelector(state => state.app.alertText)
     const [isMember, setMember] = useState(true)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -36,7 +36,7 @@ const SellerAuth = () => {
     };
 
     useEffect(() => {
-        if(seller) {
+        if (seller) {
             setTimeout(() => {
                 navigate("/")
             }, 3000)
@@ -45,7 +45,7 @@ const SellerAuth = () => {
 
     return (
         <div>
-            {showError && <ErrorAlert errorText={errorText} />}
+            {showAlert && <Alert alertText={alertText} />}
             <form className="seller-auth" onSubmit={sellerAuthHandler}>
                 <h2 style={{ textAlign: "center" }}>Seller Authentication</h2>
                 {!isMember && <Input

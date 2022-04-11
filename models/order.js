@@ -21,10 +21,6 @@ const orderSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    bookId: {
-        type: mongoose.Types.ObjectId,
-        ref: "book"
-    },
     orderedBy: {
         type: mongoose.Types.ObjectId,
         ref: "customer"

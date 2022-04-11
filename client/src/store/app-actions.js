@@ -23,16 +23,16 @@ export const getBooksData = () => {
         try {
             const fetchedBooks = await getBooks()
             dispatch(appActions.getBooks({
-                errorText: '',
-                showError: false,
+                alertText: "",
+                showAlert: false,
                 books: fetchedBooks.books,
                 totalQuantity: fetchedBooks.totalBooks
             })
             )
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message,
-                showError: true
+                alertText: err.message,
+                showAlert: true
             }))
         }
     }
@@ -63,16 +63,16 @@ export const registerSellerData = (currentSeller) => {
             const sellerData = await signupSeller()
             const { seller, token } = sellerData
             dispatch(appActions.registerSeller({
-                errorText: "",
-                showError: false,
+                alertText: "",
+                showAlert: false,
                 seller: seller,
                 sellerToken: token
             }))
             addSellerToLocalStorage({ seller, token })
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message,
-                showError: true
+                alertText: err.message,
+                showAlert: true
             }))
         }
     }
@@ -98,16 +98,16 @@ export const loginSellerData = (currentSeller) => {
             const sellerData = await loginSeller()
             const { seller, token } = sellerData
             dispatch(appActions.loginSeller({
-                errorText: "",
+                alertText: "",
                 seller: seller,
                 sellerToken: token,
-                showError: false
+                showAlert: false
             }))
             addSellerToLocalStorage({ seller, token })
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message,
-                showError: true
+                alertText: err.message,
+                showAlert: true
             }))
         }
     }
@@ -138,16 +138,16 @@ export const registerCustomerData = (currentCustomer) => {
             const customerData = await signupCustomer()
             const { customer, token } = customerData
             dispatch(appActions.registerCustomer({
-                errorText: "",
-                showError: false,
+                alertText: "",
+                showAlert: false,
                 customer: customer,
                 customerToken: token
             }))
             addCustomerToLocalStorage({ customer, token })
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message,
-                showError: true
+                alertText: err.message,
+                showAlert: true
             }))
         }
     }
@@ -173,25 +173,25 @@ export const loginCustomerData = (currentCustomer) => {
             const customerData = await loginCustomer()
             const { customer, token } = customerData
             dispatch(appActions.loginCustomer({
-                errorText: "",
-                showError: false,
+                alertText: "",
+                showAlert: false,
                 customer: customer,
                 customerToken: token
             }))
             addCustomerToLocalStorage({ customer, token })
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message,
-                showError: true
+                alertText: err.message,
+                showAlert: true
             }))
         }
     }
 }
 
-export const orderBookHandler = (userData, cusToken) => {
+export const orderBookHandler = (userData, cusToken, bookId) => {
     return async (dispatch) => {
         const orderBook = async () => {
-            const response = await fetch("/api/customer/orderbook", {
+            const response = await fetch(`/api/customer/orderbook/${bookId}`, {
                 method: "POST",
                 body: JSON.stringify(userData),
                 headers: {
@@ -210,13 +210,12 @@ export const orderBookHandler = (userData, cusToken) => {
             const { order } = orderData
             dispatch(appActions.orderBook({
                 order: order,
-                errorText: "",
-                showError: false
+                showAlert: false
             }))
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message,
-                showError: true
+                alertText: err.message,
+                showAlert: true
             }))
         }
     }
@@ -244,14 +243,14 @@ export const createBookHandler = (formData, sellerToken) => {
             const bookData = await createBook()
             const { book } = bookData
             dispatch(appActions.orderBook({
-                errorText: "",
-                showError: false,
+                alertText: "",
+                showAlert: false,
                 books: book
             }))
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message,
-                showError: true
+                alertText: err.message,
+                showAlert: true
             }))
         }
     }
@@ -267,7 +266,7 @@ export const getCustomerOrders = (customerToken) => {
             })
             const data = await response.json()
             if (!response.ok) {
-                throw new Error("Could not fetch Orders")
+                throw new Error(data.msg)
             }
             return data
         }
@@ -275,15 +274,40 @@ export const getCustomerOrders = (customerToken) => {
             const ordersData = await getOrders()
             const { orders } = ordersData
             dispatch(appActions.getOrders({
-                errorText: "",
+                alertText: "",
                 orders: orders,
-                showError: false
+                showAlert: false
             }))
         } catch (err) {
-            dispatch(appActions.errorHandler({
-                errorText: err.message,
-                showError: true
+            console.log(err)
+        }
+    }
+}
+
+export const getSoldBooksOfSeller = (sellerToken) => {
+    return async (dispatch) => {
+        const getsoldBooks = async () => {
+            const response = await fetch("/api/seller/getsoldbooks", {
+                headers: {
+                    "Authorization": "Bearer " + sellerToken
+                }
+            })
+            const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
+            return data
+        }
+        try {
+            const booksData = await getsoldBooks()
+            console.log(booksData)
+            const { books, booksSold } = booksData
+            dispatch(appActions.getSoldBooks({
+                sellerBooks: books,
+                booksSold: booksSold
             }))
+        } catch (err) {
+            console.log(err)
         }
     }
 }

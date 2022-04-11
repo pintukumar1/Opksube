@@ -3,15 +3,16 @@ import Input from '../components/FormElements/Input'
 import Button from '../components/FormElements/Button'
 import "./NewBook.css"
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { clearErrorHandler, orderBookHandler } from "../store/app-actions"
-import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
+import Alert from '../components/Alert/Alert'
 
 const Order = () => {
     const cusToken = useSelector(state => state.app.customerToken)
-    const showError = useSelector(state => state.app.showError)
-    const errorText = useSelector(state => state.app.errorText)
+    const showAlert = useSelector(state => state.app.showAlert)
+    const alertText = useSelector(state => state.app.alertText)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const bookId = useParams().bookId
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -21,14 +22,15 @@ const Order = () => {
 
     const orderHandler = async (event) => {
         event.preventDefault()
-        const userData = { name, email, contactNumber, address, pinCode, bookId }
-        dispatch(orderBookHandler(userData, cusToken))
+        const userData = { name, email, contactNumber, address, pinCode }
+        dispatch(orderBookHandler(userData, cusToken, bookId))
         dispatch(clearErrorHandler())
     }
 
     return (
         <>
-            {showError && <ErrorAlert errorText={errorText} />}
+            {showAlert && <Alert alertText={alertText} />}
+            <h2 className="center">Checkout</h2>
             <form className="bookform" onSubmit={orderHandler}>
                 <Input
                     id="name"

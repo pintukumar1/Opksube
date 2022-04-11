@@ -6,11 +6,14 @@ import { useDispatch, useSelector } from "react-redux"
 import Fuse from "fuse.js"
 import Button from '../components/FormElements/Button'
 import { getBooksData } from "../store/app-actions"
+import Alert from '../components/Alert/Alert'
 
 const AllBooks = (props) => {
     const dispatch = useDispatch()
     const [search, setSearch] = useState("")
     const books = useSelector(state => state.app.books)
+    const showAlert = useSelector(state => state.app.showAlert)
+    const alertText = useSelector(state => state.app.alertText)
     const seller = useSelector(state => state.app.seller)
 
     useEffect(() => {
@@ -51,6 +54,7 @@ const AllBooks = (props) => {
                     value={search}
                     onChange={(event) => setSearch(event.target.value)} />
             )}
+            {showAlert && <Alert alertText={alertText} />}
             <BookList books={productResults} />
         </div>
     )

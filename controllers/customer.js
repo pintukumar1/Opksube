@@ -128,7 +128,8 @@ const login = async (req, res, next) => {
 }
 
 const orderBook = async (req, res, next) => {
-    const { name, email, contactNumber, address, pinCode, bookId } = req.body
+    const { name, email, contactNumber, address, pinCode } = req.body
+    const bookId = req.params.bookId
     const orderedBy = req.customer.customerId
     if (!name || !email || !contactNumber || !address || !pinCode) {
         const error = new BadRequestError("please provide all values")
@@ -141,8 +142,7 @@ const orderBook = async (req, res, next) => {
         contactNumber,
         address,
         pinCode,
-        orderedBy,
-        bookId
+        orderedBy    
     })
     try {
         await newOrder.save()
@@ -151,11 +151,12 @@ const orderBook = async (req, res, next) => {
         return next(error)
     }
     try {
-        const book = await Book.findById(bookId)
         const customer = await Customer.findById(req.customer.customerId)
+        const seller = await Seller.findOne({books: bookId})
         customer.booksPurchased.push(bookId)
+        seller.booksSold.push(bookId)
         await customer.save()
-        await book.remove()
+        await seller.save()
     } catch (err) {
         const error = new InternalServerError("could not create order...")
         return next(error)

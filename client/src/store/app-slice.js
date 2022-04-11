@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const customer = localStorage.getItem("customer")
+const customerToken = localStorage.getItem("customerToken")
 const seller = localStorage.getItem("seller")
+const sellerToken = localStorage.getItem("sellerToken")
 
 const initialAppState = {
     books: [],
     totalQuantity: 0,
-    sellerToken: null,
-    seller: seller || null,
-    customerToken: null,
-    customer: customer || null,
+    sellerToken: sellerToken,
+    seller: seller,
+    customerToken: customerToken,
+    customer: customer,
     orders: [],
 }
 

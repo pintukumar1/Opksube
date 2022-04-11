@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const { BadRequestError, InternalServerError, UnAuthenticatedError } = require("../errors")
 const Book = require('../models/book')
+const Order = require("../models/order")
 
 const register = async (req, res, next) => {
     const { name, email, password } = req.body
@@ -129,6 +130,7 @@ const login = async (req, res, next) => {
 
 const createBook = async (req, res, next) => {
     const { title, description, price, image } = req.body
+    const creator = req.seller.sellerId
 
     if (!title || !description || !price || !image) {
         const error = new BadRequestError("Please provide all values...")
@@ -138,16 +140,30 @@ const createBook = async (req, res, next) => {
         title,
         description,
         price,
-        image ,
-        creator: req.seller.sellerId
+        image,
+        creator
     })
     try {
         await newBook.save()
+        const seller = await Seller.findById(creator)
+        seller.books.push({ _id: newBook._id })
+        await seller.save()
     } catch (err) {
         const error = new InternalServerError("Unable to create book, Please try again..")
         return next(error)
     }
     res.status(StatusCodes.CREATED).json({ book: newBook })
+}
+
+getSoldBooks = async (req, res, next) => {
+    let orders
+    try {
+        orders = await Order.find({ books: req.seller.sellerId })
+    } catch (err) {
+        const error = new InternalServerError("Could not fetched seller orders Please try again later..")
+        return next(error)
+    }
+    res.status(StatusCodes.OK).json({ orders: orders })
 }
 
 exports.register = register

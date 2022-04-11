@@ -33,6 +33,16 @@ function Navlinks() {
                     ALL BOOKS
                 </NavLink>
             </li>
+            {customer && <li>
+                    <NavLink
+                        to="/orders"
+                        className={({ isActive }) =>
+                            isActive ? 'active' : undefined
+                        }>
+                        YOUR ORDERS
+                    </NavLink>
+                </li>
+            }
             {seller && <li>
                 <NavLink
                     to="/add-book"

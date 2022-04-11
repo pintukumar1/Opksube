@@ -6,6 +6,7 @@ require("dotenv").config()
 const { BadRequestError, InternalServerError, UnAuthenticatedError } = require("../errors")
 const Order = require('../models/order')
 const Book = require("../models/book")
+const Seller = require("../models/seller")
 
 const register = async (req, res, next) => {
     const { name, email, password } = req.body
@@ -151,21 +152,26 @@ const orderBook = async (req, res, next) => {
     }
     try {
         const book = await Book.findById(bookId)
+        const seller = await Seller.findOne({ books: bookId })
+        const customer = await Customer.findById(req.customer.customerId)
+        customer.booksPurchased.push(bookId)
+        seller.booksSold.push(bookId)
+        await customer.save()
+        await seller.save()
         await book.remove()
     } catch (err) {
-        const error = new InternalServerError("could not delete book")
+        const error = new InternalServerError("could not create order...")
         return next(error)
     }
-
     res.status(StatusCodes.CREATED).json({ msg: "Book ordered successfully & deleted from books db", order: newOrder })
 }
 
 const getOrders = async (req, res, next) => {
     let orders
     try {
-        orders = await Order.findById(req.customer.customerId)
+        orders = await Order.find({orderedBy: req.customer.customerId})
     } catch (err) {
-        const error = new InternalServerError("Could not fetch orders, Please try again...")
+        const error = new InternalServerError("Could not fetch your orders, Please try again...")
         return next(error)
     }
     res.status(StatusCodes.OK).json({ msg: "orders fetched", orders: orders })

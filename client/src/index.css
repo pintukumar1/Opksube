@@ -19,3 +19,7 @@ html {
 .content{
   margin-top: 5rem;
 }
+
+.center {
+  text-align: center;
+}

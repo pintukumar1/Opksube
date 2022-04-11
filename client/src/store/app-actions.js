@@ -44,7 +44,7 @@ export const registerSellerData = (currentSeller) => {
             if (!response.ok) {
                 throw new Error("Could not register, Please try again..")
             }
-            const data = response.json()
+            const data = await response.json()
             console.log(data)
             return data
         }
@@ -75,7 +75,7 @@ export const loginSellerData = (currentSeller) => {
             if (!response.ok) {
                 throw new Error("Could not login, Please try again..")
             }
-            const data = response.json()
+            const data = await response.json()
             return data
         }
         try {
@@ -110,7 +110,7 @@ export const registerCustomerData = (currentCustomer) => {
             if (!response.ok) {
                 throw new Error("Could not register, Please try again..")
             }
-            const data = response.json()
+            const data = await response.json()
             return data
         }
         try {
@@ -140,7 +140,7 @@ export const loginCustomerData = (currentCustomer) => {
             if (!response.ok) {
                 throw new Error("Could not login, Please try again..")
             }
-            const data = response.json()
+            const data = await response.json()
             return data
         }
         try {
@@ -171,7 +171,7 @@ export const orderBookHandler = (userData, cusToken) => {
             if (!response.ok) {
                 throw new Error("creating order failed....")
             }
-            const data = response.json()
+            const data = await response.json()
             console.log(data)
             return data
         }
@@ -202,7 +202,7 @@ export const createBookHandler = (formData, sellerToken) => {
             if (!response.ok) {
                 throw new Error("creating book failed....")
             }
-            const data = response.json()
+            const data = await response.json()
             console.log(data)
             return data
         }
@@ -229,7 +229,7 @@ export const getCustomerOrders = (customerToken) => {
             if (!response.ok) {
                 throw new Error("Could not fetch Orders")
             }
-            const data = response.json()
+            const data = await response.json()
             return data
         }
         try {
@@ -239,7 +239,8 @@ export const getCustomerOrders = (customerToken) => {
                 orders: orders
             }))
         } catch(err) {
-            console.log(err.response.data)
+            console.log(err)
         }
     }
 }
+

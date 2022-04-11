@@ -17,7 +17,7 @@ const customerSchema = new Schema({
         required: true,
         minlength: 6
     },
-    booksBought: [
+    booksPurchased: [
         { 
             type: mongoose.Types.ObjectId, 
             ref: 'book' 

@@ -3,11 +3,10 @@ import Input from '../components/FormElements/Input'
 import Button from '../components/FormElements/Button'
 import "./NewBook.css"
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { orderBookHandler } from "../store/app-actions"
 
 const Order = () => {
-    const navigate = useNavigate()
     const cusToken = useSelector(state => state.app.customerToken)
     const dispatch = useDispatch()
     const bookId = useParams().bookId
@@ -21,7 +20,6 @@ const Order = () => {
         event.preventDefault()
         const userData = { name, email, contactNumber, address, pinCode, bookId }
         dispatch(orderBookHandler(userData, cusToken))
-        navigate("/")
     }
     return (
         <form className="bookform" onSubmit={orderHandler}>

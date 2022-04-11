@@ -9,4 +9,4 @@ router.post("/login", customerController.login)
 router.post("/orderbook", verifyCustomer , customerController.orderBook)
 router.get("/getorders", verifyCustomer , customerController.getOrders)
 
-module.exports = router
+module.exports = router 

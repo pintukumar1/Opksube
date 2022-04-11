@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AllBooksPage from "./pages/AllBooksPage";
 import { getBooksData } from "./store/app-actions";
 import BookDetails from "./pages/BookDetails";
@@ -11,7 +11,6 @@ import MainNavigation from "./components/Navigation/MainNavigation";
 import Order from "./pages/Order";
 import Landing from "./pages/Landing";
 import ErrorPage from "./pages/Error"
-import { appActions } from "./store/app-slice";
 
 const App = () => {
   const dispatch = useDispatch()

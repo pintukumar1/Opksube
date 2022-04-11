@@ -160,6 +160,19 @@ const orderBook = async (req, res, next) => {
     res.status(StatusCodes.CREATED).json({ msg: "Book ordered successfully & deleted from books db", order: newOrder })
 }
 
+const getOrders = async (req, res, next) => {
+    let orders
+    try {
+        orders = await Order.findById(req.customer.customerId)
+    } catch (err) {
+        const error = new InternalServerError("Could not fetch orders, Please try again...")
+        return next(error)
+    }
+    res.status(StatusCodes.OK).json({ msg: "orders fetched", orders: orders })
+}
+
+
 exports.register = register
 exports.login = login
 exports.orderBook = orderBook
+exports.getOrders = getOrders

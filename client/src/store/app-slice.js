@@ -48,6 +48,9 @@ const appSlice = createSlice({
         },
         createBook(state, action) {
             state.books = action.payload.books
+        },
+        getOrders(state, action) {
+            state.orders = action.payload.orders
         }
     }
 })

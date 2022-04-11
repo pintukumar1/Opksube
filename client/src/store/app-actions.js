@@ -217,3 +217,29 @@ export const createBookHandler = (formData, sellerToken) => {
         }
     }
 }
+
+export const getCustomerOrders = (customerToken) => {
+    return async (dispatch) => {
+        const getOrders = async () => {
+            const response = await fetch("/api/customer/getorders", {
+                headers: {
+                    "Authorization": "Bearer " + customerToken
+                }
+            })
+            if (!response.ok) {
+                throw new Error("Could not fetch Orders")
+            }
+            const data = response.json()
+            return data
+        }
+        try {
+            const ordersData = await getOrders()
+            const { orders } = ordersData
+            dispatch(appActions.getOrders({
+                orders: orders
+            }))
+        } catch(err) {
+            console.log(err.response.data)
+        }
+    }
+}

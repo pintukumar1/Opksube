@@ -19,7 +19,6 @@ const CustomerOrders = () => {
             </Card>
         )
     }
-    console.log(orders)
 
     return (
         <div>

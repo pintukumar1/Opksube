@@ -278,9 +278,7 @@ export const getCustomerOrders = (customerToken) => {
                 orders: orders,
                 showAlert: false
             }))
-        } catch (err) {
-            console.log(err)
-        }
+        } catch (err) {}
     }
 }
 
@@ -300,15 +298,12 @@ export const getSoldBooksOfSeller = (sellerToken) => {
         }
         try {
             const booksData = await getsoldBooks()
-            console.log(booksData)
             const { books, booksSold } = booksData
             dispatch(appActions.getSoldBooks({
                 sellerBooks: books,
                 booksSold: booksSold
             }))
-        } catch (err) {
-            console.log(err)
-        }
+        } catch (err) {}
     }
 }
 

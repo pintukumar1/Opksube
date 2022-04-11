@@ -6,12 +6,10 @@ import ImageUpload from "../components/FormElements/ImageUpload"
 import { useDispatch, useSelector } from 'react-redux';
 import { createBookHandler } from "../store/app-actions"
 import './NewBook.css';
-import { appActions } from '../store/app-slice';
 
 const NewBook = () => {
     const dispatch = useDispatch()
     const sellerToken = useSelector(state => state.app.sellerToken)
-    const navigate = useNavigate();
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")

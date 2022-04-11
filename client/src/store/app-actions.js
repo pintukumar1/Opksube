@@ -1,5 +1,13 @@
 import { appActions } from "./app-slice"
 
+export const clearErrorHandler = () => {
+    return (dispatch) => {
+        setTimeout(() => {
+            dispatch(appActions.clearError())
+        }, 3000)
+    }
+}
+
 export const getBooksData = () => {
     return async (dispatch) => {
         const getBooks = async () => {
@@ -16,13 +24,15 @@ export const getBooksData = () => {
             const fetchedBooks = await getBooks()
             dispatch(appActions.getBooks({
                 errorText: '',
+                showError: false,
                 books: fetchedBooks.books,
                 totalQuantity: fetchedBooks.totalBooks
             })
             )
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message
+                errorText: err.message,
+                showError: true
             }))
         }
     }
@@ -54,13 +64,15 @@ export const registerSellerData = (currentSeller) => {
             const { seller, token } = sellerData
             dispatch(appActions.registerSeller({
                 errorText: "",
+                showError: false,
                 seller: seller,
                 sellerToken: token
             }))
             addSellerToLocalStorage({ seller, token })
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message
+                errorText: err.message,
+                showError: true
             }))
         }
     }
@@ -88,12 +100,14 @@ export const loginSellerData = (currentSeller) => {
             dispatch(appActions.loginSeller({
                 errorText: "",
                 seller: seller,
-                sellerToken: token
+                sellerToken: token,
+                showError: false
             }))
             addSellerToLocalStorage({ seller, token })
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message
+                errorText: err.message,
+                showError: true
             }))
         }
     }
@@ -125,13 +139,15 @@ export const registerCustomerData = (currentCustomer) => {
             const { customer, token } = customerData
             dispatch(appActions.registerCustomer({
                 errorText: "",
+                showError: false,
                 customer: customer,
                 customerToken: token
             }))
             addCustomerToLocalStorage({ customer, token })
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message
+                errorText: err.message,
+                showError: true
             }))
         }
     }
@@ -158,13 +174,15 @@ export const loginCustomerData = (currentCustomer) => {
             const { customer, token } = customerData
             dispatch(appActions.loginCustomer({
                 errorText: "",
+                showError: false,
                 customer: customer,
                 customerToken: token
             }))
             addCustomerToLocalStorage({ customer, token })
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message
+                errorText: err.message,
+                showError: true
             }))
         }
     }
@@ -192,11 +210,13 @@ export const orderBookHandler = (userData, cusToken) => {
             const { order } = orderData
             dispatch(appActions.orderBook({
                 order: order,
-                errorText: ""
+                errorText: "",
+                showError: false
             }))
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message
+                errorText: err.message,
+                showError: true
             }))
         }
     }
@@ -225,11 +245,13 @@ export const createBookHandler = (formData, sellerToken) => {
             const { book } = bookData
             dispatch(appActions.orderBook({
                 errorText: "",
+                showError: false,
                 books: book
             }))
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message
+                errorText: err.message,
+                showError: true
             }))
         }
     }
@@ -254,11 +276,13 @@ export const getCustomerOrders = (customerToken) => {
             const { orders } = ordersData
             dispatch(appActions.getOrders({
                 errorText: "",
-                orders: orders
+                orders: orders,
+                showError: false
             }))
         } catch (err) {
             dispatch(appActions.errorHandler({
-                errorText: err.message
+                errorText: err.message,
+                showError: true
             }))
         }
     }

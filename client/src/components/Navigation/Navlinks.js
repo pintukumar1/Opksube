@@ -1,12 +1,13 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom'
+import { useNavigate, NavLink} from 'react-router-dom'
 import { appActions } from '../../store/app-slice';
 import Button from '../FormElements/Button';
 import './Navlinks.css'
 
 function Navlinks() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const seller = useSelector(state => state.app.seller)
     const customer = useSelector(state => state.app.customer)
 
@@ -20,6 +21,7 @@ function Navlinks() {
     const logout = () => {
         dispatch(appActions.logout())
         removeItemFromLocalStorage()
+        navigate("/landing")
     }
 
     return (

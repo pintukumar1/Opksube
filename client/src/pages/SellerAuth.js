@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/FormElements/Button'
 import Input from '../components/FormElements/Input'
-import { registerSellerData, loginSellerData } from "../store/app-actions"
+import { registerSellerData, loginSellerData, clearErrorHandler } from "../store/app-actions"
 import { useDispatch, useSelector } from "react-redux"
 import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
 
 const SellerAuth = () => {
     const dispatch = useDispatch()
     const seller = useSelector(state => state.app.seller)
+    const showError = useSelector(state => state.app.showError)
     const errorText = useSelector(state => state.app.errorText)
     const [isMember, setMember] = useState(true)
     const [email, setEmail] = useState("")
@@ -31,6 +32,7 @@ const SellerAuth = () => {
         } else {
             dispatch(registerSellerData(dataForRegister))
         }
+        dispatch(clearErrorHandler())
     };
 
     useEffect(() => {
@@ -43,7 +45,7 @@ const SellerAuth = () => {
 
     return (
         <div>
-            {errorText && <ErrorAlert errorText={errorText} />}
+            {showError && <ErrorAlert errorText={errorText} />}
             <form className="seller-auth" onSubmit={sellerAuthHandler}>
                 <h2 style={{ textAlign: "center" }}>Seller Authentication</h2>
                 {!isMember && <Input

@@ -4,11 +4,12 @@ import Button from '../components/FormElements/Button'
 import "./NewBook.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { orderBookHandler } from "../store/app-actions"
+import { clearErrorHandler, orderBookHandler } from "../store/app-actions"
 import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
 
 const Order = () => {
     const cusToken = useSelector(state => state.app.customerToken)
+    const showError = useSelector(state => state.app.showError)
     const errorText = useSelector(state => state.app.errorText)
     const dispatch = useDispatch()
     const bookId = useParams().bookId
@@ -22,11 +23,12 @@ const Order = () => {
         event.preventDefault()
         const userData = { name, email, contactNumber, address, pinCode, bookId }
         dispatch(orderBookHandler(userData, cusToken))
+        dispatch(clearErrorHandler())
     }
 
     return (
         <>
-            {errorText && <ErrorAlert errorText={errorText} />}
+            {showError && <ErrorAlert errorText={errorText} />}
             <form className="bookform" onSubmit={orderHandler}>
                 <Input
                     id="name"

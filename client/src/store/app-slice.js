@@ -14,7 +14,8 @@ const initialAppState = {
     customerToken: customerToken,
     customer: customer,
     order: {},
-    orders: []
+    orders: [],
+    showError: false
 }
 
 const appSlice = createSlice({
@@ -31,6 +32,11 @@ const appSlice = createSlice({
         },
         errorHandler(state, action) {
             state.errorText = action.payload.errorText
+            state.showError = action.payload.showError
+        },
+        clearError(state, action) {
+            state.errorText = ""
+            state.showError = false
         },
         loginSeller(state, action) {
             state.seller = action.payload.seller

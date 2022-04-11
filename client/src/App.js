@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AllBooksPage from "./pages/AllBooksPage";
-import { getBooksData } from "./store/app-actions";
 import BookDetails from "./pages/BookDetails";
 import NewBook from "./pages/NewBook";
 import SellerAuth from "./pages/SellerAuth";
@@ -14,25 +12,19 @@ import ErrorPage from "./pages/Error"
 import CustomerOrders from "./pages/CustomerOrders";
 
 const App = () => {
-  const dispatch = useDispatch()
-  
-  useEffect(() => {
-    dispatch(getBooksData())
-  }, [])
-
   return (
     <BrowserRouter>
       <MainNavigation />
       <main className="content">
         <Routes>
           <Route path="/" element={<AllBooksPage/>} />
+          <Route path="/landing" index element={<Landing />} />
           <Route path="/bookdetails/:bookId" element={<BookDetails />} />
           <Route path="/add-book" element={<NewBook />} />
           <Route path="/orders" element={<CustomerOrders/>} />
           <Route path="/:bookId/order-book" element={<Order />} />
           <Route path="/seller-auth" element={<SellerAuth />} />
           <Route path="/customer-auth" element={<CustomerAuth />} />
-          <Route path="/landing" element={<Landing />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </main>

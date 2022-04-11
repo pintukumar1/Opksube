@@ -7,11 +7,6 @@ function MainNavigation() {
     return (
         <React.Fragment>
             <MainHeader>
-                <div className={classes['main-navigation__menu-btn']}>
-                    <span />
-                    <span />
-                    <span />
-                </div>
                 <nav className={classes['main-navigation__header-nav']}>
                     <Navlinks />
                 </nav>

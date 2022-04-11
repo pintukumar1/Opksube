@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import Input from '../components/FormElements/Input';
 import Button from '../components/FormElements/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { createBookHandler } from "../store/app-actions"
-import Card from "../components/UIElements/Card"
+import { clearErrorHandler, createBookHandler } from "../store/app-actions"
+import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
 import './NewBook.css';
 
 const NewBook = () => {
     const dispatch = useDispatch()
-    const sellerToken = useSelector(state => state.app.sellerToken)
     const errorText = useSelector(state => state.app.errorText)
+    const sellerToken = useSelector(state => state.app.sellerToken)
+    const showError = useSelector(state => state.app.showError)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
@@ -19,10 +20,12 @@ const NewBook = () => {
         event.preventDefault();
         const formData = { title, description, price, image }
         dispatch(createBookHandler(formData, sellerToken))
+        dispatch(clearErrorHandler())
     };
 
     return (
         <div>
+            {showError && <ErrorAlert errorText={errorText} />}
             <form className="bookform" onSubmit={placeSubmitHandler}>
                 <Input
                     id="title"

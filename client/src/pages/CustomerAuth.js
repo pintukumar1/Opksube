@@ -2,22 +2,25 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/FormElements/Button'
 import Input from '../components/FormElements/Input'
-import { registerCustomerData, loginCustomerData } from "../store/app-actions"
+import { registerCustomerData, loginCustomerData, clearErrorHandler } from "../store/app-actions"
 import { useDispatch, useSelector } from "react-redux"
+import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
 
 const CustomerAuth = () => {
     const dispatch = useDispatch()
+    const showError = useSelector(state => state.app.showError)
+    const errorText = useSelector(state => state.app.errorText)
     const customer = useSelector(state => state.app.customer)
     const [isMember, setMember] = useState(true)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
-
+    
     const navigate = useNavigate();
-
+    
     const customerAuthHandler = async (event) => {
         event.preventDefault();
-
+        
         const dataForLogin = {
             email, password
         }
@@ -29,8 +32,9 @@ const CustomerAuth = () => {
         } else {
             dispatch(registerCustomerData(dataForRegister))
         }
+        dispatch(clearErrorHandler())
     };
-
+    
     useEffect(() => {
         if(customer) {
             setTimeout(() => {
@@ -38,9 +42,10 @@ const CustomerAuth = () => {
             }, 3000)
         }
     }, [customer, navigate])
-
+    
     return (
         <div>
+            {showError && <ErrorAlert errorText={errorText} />}
             <form className="seller-auth" onSubmit={customerAuthHandler}>
                 <h2 style={{ textAlign: "center" }}>Customer Authentication</h2>
                 {!isMember && <Input

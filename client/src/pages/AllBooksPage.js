@@ -1,17 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import BookList from '../components/BookList/BookList'
 import Card from '../components/UIElements/Card'
 import Input from "../components/FormElements/Input"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Fuse from "fuse.js"
 import Button from '../components/FormElements/Button'
-import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
+import { getBooksData } from "../store/app-actions"
 
 const AllBooks = (props) => {
+    const dispatch = useDispatch()
     const [search, setSearch] = useState("")
-    const errorText = useSelector(state => state.app.errorText)
     const books = useSelector(state => state.app.books)
     const seller = useSelector(state => state.app.seller)
+
+    useEffect(() => {
+        dispatch(getBooksData())
+    }, [])
 
     const fuse = new Fuse(books, {
         keys: ["title"]
@@ -38,7 +42,6 @@ const AllBooks = (props) => {
 
     return (
         <div>
-            {errorText && <ErrorAlert errorText={errorText} />}
             {books.length > 0 && (
                 <Input
                     type="text"

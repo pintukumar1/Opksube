@@ -10,15 +10,16 @@ function Navlinks() {
     const seller = useSelector(state => state.app.seller)
     const customer = useSelector(state => state.app.customer)
 
+    const removeItemFromLocalStorage = () => {
+        localStorage.removeItem("seller")
+        localStorage.removeItem("sellerToken")
+        localStorage.removeItem("customer")
+        localStorage.removeItem("customerToken")
+    }
+
     const logout = () => {
-        if (seller) {
-            localStorage.removeItem("seller")
-            localStorage.removeItem("sellerToken")
-        } else {
-            localStorage.removeItem("customer")
-            localStorage.removeItem("customerToken")
-        }
         dispatch(appActions.logout())
+        removeItemFromLocalStorage()
     }
 
     return (

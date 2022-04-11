@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Input from '../components/FormElements/Input';
 import Button from '../components/FormElements/Button';
-import ImageUpload from "../components/FormElements/ImageUpload"
 import { useDispatch, useSelector } from 'react-redux';
 import { createBookHandler } from "../store/app-actions"
 import './NewBook.css';
@@ -15,15 +13,11 @@ const NewBook = () => {
     const [price, setPrice] = useState("")
     const [image, setImage] = useState("")
 
-    const placeSubmitHandler = async event => {
+    const placeSubmitHandler = event => {
         event.preventDefault();
-        const formData = new FormData();
-        formData.append("title", title)
-        formData.append("description", description)
-        formData.append("price", price)
-        formData.append("image", image)
+        const formData = {title, description, price, image}
+        console.log(formData)
         dispatch(createBookHandler(formData, sellerToken))
-        // navigate('/');
     };
 
     return (
@@ -51,10 +45,13 @@ const NewBook = () => {
                 value={price}
                 onChange={(event) => setPrice(event.target.value)}
             />
-            <ImageUpload
+            <Input
                 id="image"
+                element="input"
+                label="Image"
+                type="text"
                 value={image}
-                onChange={(event) => setImage(event.target.files[0])}
+                onChange={(event) => setImage(event.target.value)}
             />
             <Button type="submit">
                 ADD BOOK

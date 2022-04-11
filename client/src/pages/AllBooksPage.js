@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import BookList from '../components/BookList/BookList'
 import Card from '../components/UIElements/Card'
 import Input from "../components/FormElements/Input"
@@ -32,7 +32,7 @@ const AllBooks = (props) => {
                 type="text"
                 placeholder="Search by title"
                 element="input"
-                style={{ width: "15rem", margin: "auto" ,height: "30px" }}
+                style={{ width: "15rem", margin: "auto", height: "30px" }}
                 value={searchquery}
                 onChange={(event) => setQuery(event.target.value)} />
             <BookList books={productResults} />

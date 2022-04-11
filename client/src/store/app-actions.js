@@ -193,7 +193,7 @@ export const createBookHandler = (formData, sellerToken) => {
         const createBook = async () => {
             const response = await fetch("/api/seller/createbook", {
                 method: "POST",
-                body: formData,
+                body: JSON.stringify(formData),
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + sellerToken

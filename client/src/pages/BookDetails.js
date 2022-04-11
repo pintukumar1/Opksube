@@ -28,7 +28,7 @@ const BookDetails = () => {
         <div className='book-item'>
             <Card className='book-item__content'>
                 <div className='book-item__image'>
-                    <img src={`/${book.image}`} alt={book.title} />
+                    <img src={book.image} alt={book.title} />
                 </div>
                 <div className='book-item__info'>
                     <h2>{book.title}</h2>

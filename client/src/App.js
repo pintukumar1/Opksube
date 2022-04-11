@@ -11,18 +11,13 @@ import MainNavigation from "./components/Navigation/MainNavigation";
 import Order from "./pages/Order";
 import Landing from "./pages/Landing";
 import ErrorPage from "./pages/Error"
+import { appActions } from "./store/app-slice";
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const seller = useSelector(state => state.app.seller)
-  const customer = useSelector(state => state.app.customer)
   const books = useSelector(state => state.app.books)
   const total = useSelector(state => state.app.totalQuantity)
-
-  if (!seller || !customer) {
-    <Navigate to="/landing" />
-  }
 
   useEffect(() => {
     dispatch(getBooksData())

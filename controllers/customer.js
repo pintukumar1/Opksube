@@ -152,12 +152,9 @@ const orderBook = async (req, res, next) => {
     }
     try {
         const book = await Book.findById(bookId)
-        const seller = await Seller.findOne({ books: bookId })
         const customer = await Customer.findById(req.customer.customerId)
         customer.booksPurchased.push(bookId)
-        seller.booksSold.push(bookId)
         await customer.save()
-        await seller.save()
         await book.remove()
     } catch (err) {
         const error = new InternalServerError("could not create order...")
@@ -169,7 +166,7 @@ const orderBook = async (req, res, next) => {
 const getOrders = async (req, res, next) => {
     let orders
     try {
-        orders = await Order.find({orderedBy: req.customer.customerId})
+        orders = await Order.find({ orderedBy: req.customer.customerId })
     } catch (err) {
         const error = new InternalServerError("Could not fetch your orders, Please try again...")
         return next(error)

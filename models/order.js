@@ -21,14 +21,12 @@ const orderSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    bookId:{ 
+    bookId: {
         type: mongoose.Types.ObjectId,
-        required: true,
         ref: "book"
     },
     orderedBy: {
         type: mongoose.Types.ObjectId,
-        required: true,
         ref: "customer"
     }
 })

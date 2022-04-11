@@ -17,19 +17,14 @@ const sellerSchema = new Schema({
         required: true,
         minlength: 6
     },
-    books: [
+
+    books : [
         { 
             type: mongoose.Types.ObjectId ,  
             ref: 'book' 
         }
     ],
-    booksSold: [
-        { 
-            type: mongoose.Types.ObjectId , 
-            ref: 'book' 
-        }
-    ]
-});
+})
 
 
-module.exports = mongoose.model('Seller', sellerSchema);
+module.exports = mongoose.model('seller', sellerSchema);

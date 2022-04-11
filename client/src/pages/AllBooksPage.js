@@ -5,23 +5,22 @@ import Input from "../components/FormElements/Input"
 import { useSelector } from "react-redux"
 import Fuse from "fuse.js"
 import Button from '../components/FormElements/Button'
+import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
 
 const AllBooks = (props) => {
-    const [searchquery, setQuery] = useState("")
-
+    const [search, setSearch] = useState("")
+    const errorText = useSelector(state => state.app.errorText)
     const books = useSelector(state => state.app.books)
     const seller = useSelector(state => state.app.seller)
-    const customer = useSelector(state => state.app.customer)
 
     const fuse = new Fuse(books, {
         keys: ["title"]
     })
+    const result = fuse.search(search)
 
-    const result = fuse.search(searchquery)
+    const productResults = search ? result.map(productResult => productResult.item) : books
 
-    const productResults = searchquery ? result.map(productResult => productResult.item) : books
-
-    if (props.books.length === 0) {
+    if (books.length === 0) {
         if (seller) {
             return (
                 <Card>
@@ -35,19 +34,19 @@ const AllBooks = (props) => {
                 <h3>No books found in the store..</h3>
             </Card>
         )
-
     }
 
     return (
         <div>
-            {props.books.length > 0 && (
+            {errorText && <ErrorAlert errorText={errorText} />}
+            {books.length > 0 && (
                 <Input
                     type="text"
                     placeholder="Search by title"
                     element="input"
                     style={{ width: "15rem", margin: "auto", height: "30px" }}
-                    value={searchquery}
-                    onChange={(event) => setQuery(event.target.value)} />
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)} />
             )}
             <BookList books={productResults} />
         </div>

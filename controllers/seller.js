@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const { BadRequestError, InternalServerError, UnAuthenticatedError } = require("../errors")
 const Book = require('../models/book')
-const Order = require("../models/order")
 
 const register = async (req, res, next) => {
     const { name, email, password } = req.body
@@ -153,17 +152,6 @@ const createBook = async (req, res, next) => {
         return next(error)
     }
     res.status(StatusCodes.CREATED).json({ book: newBook })
-}
-
-getSoldBooks = async (req, res, next) => {
-    let orders
-    try {
-        orders = await Order.find({ books: req.seller.sellerId })
-    } catch (err) {
-        const error = new InternalServerError("Could not fetched seller orders Please try again later..")
-        return next(error)
-    }
-    res.status(StatusCodes.OK).json({ orders: orders })
 }
 
 exports.register = register

@@ -7,12 +7,14 @@ const sellerToken = localStorage.getItem("sellerToken")
 
 const initialAppState = {
     books: [],
+    errorText: "",
     totalQuantity: 0,
     sellerToken: sellerToken,
     seller: seller,
     customerToken: customerToken,
     customer: customer,
-    orders: [],
+    order: {},
+    orders: []
 }
 
 const appSlice = createSlice({
@@ -26,6 +28,9 @@ const appSlice = createSlice({
         registerSeller(state, action) {
             state.seller = action.payload.seller
             state.sellerToken = action.payload.sellerToken
+        },
+        errorHandler(state, action) {
+            state.errorText = action.payload.errorText
         },
         loginSeller(state, action) {
             state.seller = action.payload.seller
@@ -46,7 +51,7 @@ const appSlice = createSlice({
             state.customerToken = null
         },
         orderBook(state, action) {
-            state.orders = action.payload.orders
+            state.order = action.payload.order
         },
         createBook(state, action) {
             state.books = action.payload.books

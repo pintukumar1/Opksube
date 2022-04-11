@@ -1,0 +1,8 @@
+.alert {
+    padding: 0.375rem 0.75rem;
+    font-size: x-large;
+    margin-bottom: 1rem;
+    border-color: transparent;
+    text-align: center;
+    color: rgb(119, 8, 8)
+  }

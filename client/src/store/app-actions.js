@@ -6,21 +6,24 @@ export const getBooksData = () => {
             const response = await fetch(
                 "/api/books/getbooks"
             )
-            if (!response.ok) {
-                throw new Error("Could not fetch data..")
-            }
             const data = await response.json()
-            return data;
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
+            return data
         }
         try {
             const fetchedBooks = await getBooks()
             dispatch(appActions.getBooks({
+                errorText: '',
                 books: fetchedBooks.books,
                 totalQuantity: fetchedBooks.totalBooks
             })
             )
         } catch (err) {
-            console.log(err)
+            dispatch(appActions.errorHandler({
+                errorText: err.message
+            }))
         }
     }
 }
@@ -40,24 +43,25 @@ export const registerSellerData = (currentSeller) => {
                 },
                 body: JSON.stringify(currentSeller)
             })
-            console.log(response)
-            if (!response.ok) {
-                throw new Error("Could not register, Please try again..")
-            }
             const data = await response.json()
-            console.log(data)
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
             return data
         }
         try {
             const sellerData = await signupSeller()
             const { seller, token } = sellerData
             dispatch(appActions.registerSeller({
+                errorText: "",
                 seller: seller,
                 sellerToken: token
             }))
             addSellerToLocalStorage({ seller, token })
         } catch (err) {
-            console.log(err)
+            dispatch(appActions.errorHandler({
+                errorText: err.message
+            }))
         }
     }
 }
@@ -72,22 +76,25 @@ export const loginSellerData = (currentSeller) => {
                 },
                 body: JSON.stringify(currentSeller)
             })
-            if (!response.ok) {
-                throw new Error("Could not login, Please try again..")
-            }
             const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
             return data
         }
         try {
             const sellerData = await loginSeller()
             const { seller, token } = sellerData
             dispatch(appActions.loginSeller({
+                errorText: "",
                 seller: seller,
                 sellerToken: token
             }))
             addSellerToLocalStorage({ seller, token })
         } catch (err) {
-            console.log(err)
+            dispatch(appActions.errorHandler({
+                errorText: err.message
+            }))
         }
     }
 }
@@ -107,22 +114,25 @@ export const registerCustomerData = (currentCustomer) => {
                 },
                 body: JSON.stringify(currentCustomer)
             })
-            if (!response.ok) {
-                throw new Error("Could not register, Please try again..")
-            }
             const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
             return data
         }
         try {
             const customerData = await signupCustomer()
             const { customer, token } = customerData
             dispatch(appActions.registerCustomer({
+                errorText: "",
                 customer: customer,
                 customerToken: token
             }))
             addCustomerToLocalStorage({ customer, token })
         } catch (err) {
-            console.log(err)
+            dispatch(appActions.errorHandler({
+                errorText: err.message
+            }))
         }
     }
 }
@@ -137,22 +147,25 @@ export const loginCustomerData = (currentCustomer) => {
                 },
                 body: JSON.stringify(currentCustomer)
             })
-            if (!response.ok) {
-                throw new Error("Could not login, Please try again..")
-            }
             const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
             return data
         }
         try {
             const customerData = await loginCustomer()
             const { customer, token } = customerData
             dispatch(appActions.loginCustomer({
+                errorText: "",
                 customer: customer,
                 customerToken: token
             }))
             addCustomerToLocalStorage({ customer, token })
         } catch (err) {
-            console.log(err)
+            dispatch(appActions.errorHandler({
+                errorText: err.message
+            }))
         }
     }
 }
@@ -168,21 +181,23 @@ export const orderBookHandler = (userData, cusToken) => {
                     "Authorization": "Bearer " + cusToken
                 }
             })
-            if (!response.ok) {
-                throw new Error("creating order failed....")
-            }
             const data = await response.json()
-            console.log(data)
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
             return data
         }
         try {
             const orderData = await orderBook()
             const { order } = orderData
             dispatch(appActions.orderBook({
-                orders: order
+                order: order,
+                errorText: ""
             }))
         } catch (err) {
-            console.log(err)
+            dispatch(appActions.errorHandler({
+                errorText: err.message
+            }))
         }
     }
 }
@@ -199,21 +214,23 @@ export const createBookHandler = (formData, sellerToken) => {
                     "Authorization": "Bearer " + sellerToken
                 }
             })
-            if (!response.ok) {
-                throw new Error("creating book failed....")
-            }
             const data = await response.json()
-            console.log(data)
+            if (!response.ok) {
+                throw new Error(data.msg)
+            }
             return data
         }
         try {
             const bookData = await createBook()
             const { book } = bookData
             dispatch(appActions.orderBook({
+                errorText: "",
                 books: book
             }))
         } catch (err) {
-            console.log(err)
+            dispatch(appActions.errorHandler({
+                errorText: err.message
+            }))
         }
     }
 }
@@ -226,20 +243,23 @@ export const getCustomerOrders = (customerToken) => {
                     "Authorization": "Bearer " + customerToken
                 }
             })
+            const data = await response.json()
             if (!response.ok) {
                 throw new Error("Could not fetch Orders")
             }
-            const data = await response.json()
             return data
         }
         try {
             const ordersData = await getOrders()
             const { orders } = ordersData
             dispatch(appActions.getOrders({
+                errorText: "",
                 orders: orders
             }))
-        } catch(err) {
-            console.log(err)
+        } catch (err) {
+            dispatch(appActions.errorHandler({
+                errorText: err.message
+            }))
         }
     }
 }

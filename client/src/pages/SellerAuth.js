@@ -4,10 +4,12 @@ import Button from '../components/FormElements/Button'
 import Input from '../components/FormElements/Input'
 import { registerSellerData, loginSellerData } from "../store/app-actions"
 import { useDispatch, useSelector } from "react-redux"
+import ErrorAlert from '../components/ErrorAlert/ErrorAlert'
 
 const SellerAuth = () => {
     const dispatch = useDispatch()
     const seller = useSelector(state => state.app.seller)
+    const errorText = useSelector(state => state.app.errorText)
     const [isMember, setMember] = useState(true)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -41,6 +43,7 @@ const SellerAuth = () => {
 
     return (
         <div>
+            {errorText && <ErrorAlert errorText={errorText} />}
             <form className="seller-auth" onSubmit={sellerAuthHandler}>
                 <h2 style={{ textAlign: "center" }}>Seller Authentication</h2>
                 {!isMember && <Input

@@ -10,6 +10,17 @@ function Navlinks() {
     const seller = useSelector(state => state.app.seller)
     const customer = useSelector(state => state.app.customer)
 
+    const logout = () => {
+        if (seller) {
+            localStorage.removeItem("seller")
+            localStorage.removeItem("sellerToken")
+        } else {
+            localStorage.removeItem("customer")
+            localStorage.removeItem("customerToken")
+        }
+        dispatch(appActions.logout())
+    }
+
     return (
         <ul className='nav-links'>
             <li>
@@ -52,7 +63,7 @@ function Navlinks() {
             </li>
             }
             {(seller || customer) && <li>
-                <Button onClick={() => dispatch(appActions.logout())}>
+                <Button onClick={logout}>
                     LOGOUT
                 </Button>
             </li>}

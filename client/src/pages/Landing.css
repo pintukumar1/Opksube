@@ -1,0 +1,23 @@
+  .page {
+    display: grid;
+    align-items: center;
+    margin-top: -3rem;
+  }
+  h1 {
+    font-weight: 700;
+  }
+  p {
+    color: skyblue;
+  }
+  .main-img {
+    display: none;
+  }
+  @media (min-width: 992px) {
+    .page {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 3rem;
+    }
+    .main-img {
+      display: block;
+    }
+  }

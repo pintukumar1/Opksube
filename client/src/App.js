@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AllBooksPage from "./pages/AllBooksPage";
 import { getBooksData } from "./store/app-actions";
 import BookDetails from "./pages/BookDetails";
@@ -9,12 +9,21 @@ import SellerAuth from "./pages/SellerAuth";
 import CustomerAuth from "./pages/CustomerAuth";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import Order from "./pages/Order";
+import Landing from "./pages/Landing";
+import ErrorPage from "./pages/Error"
 
 const App = () => {
   const dispatch = useDispatch()
 
+  const seller = useSelector(state => state.app.seller)
+  const customer = useSelector(state => state.app.customer)
   const books = useSelector(state => state.app.books)
   const total = useSelector(state => state.app.totalQuantity)
+
+  if (!seller || !customer) {
+    <Navigate to="/landing" />
+  }
+
   useEffect(() => {
     dispatch(getBooksData())
   }, [])
@@ -30,7 +39,8 @@ const App = () => {
           <Route path="/:bookId/order-book" element={<Order />} />
           <Route path="/seller-auth" element={<SellerAuth />} />
           <Route path="/customer-auth" element={<CustomerAuth />} />
-          <Route path="*" element={<h1>Error page!!!</h1>} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </main>
     </BrowserRouter>

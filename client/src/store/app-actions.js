@@ -157,20 +157,6 @@ export const loginCustomerData = (currentCustomer) => {
     }
 }
 
-const removeItemFromLocalStorage = () => {
-    localStorage.removeItem("seller")
-    localStorage.removeItem("sellerToken")
-    localStorage.removeItem("customer")
-    localStorage.removeItem("customerToken")
-}
-
-export const logoutHandler = async () => {
-    return (dispatch) => {
-        removeItemFromLocalStorage()
-        dispatch(appActions.logout())
-    }
-}
-
 export const orderBookHandler = (userData, cusToken) => {
     return async (dispatch) => {
         const orderBook = async () => {

@@ -17,6 +17,10 @@ const customerSchema = new Schema({
         required: true,
         minlength: 6
     },
+    contactNumber: {
+        type: Number,
+        required: true
+    },
     booksPurchased: [
         { 
             type: mongoose.Types.ObjectId, 

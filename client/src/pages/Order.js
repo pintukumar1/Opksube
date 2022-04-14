@@ -9,21 +9,21 @@ import Alert from '../components/Alert/Alert'
 
 const Order = () => {
     const cusToken = useSelector(state => state.app.customerToken)
+    const customer = useSelector(state => state.app.customer)
     const showAlert = useSelector(state => state.app.showAlert)
     const alertText = useSelector(state => state.app.alertText)
     const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const bookId = useParams().bookId
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [contactNumber, setContactNumber] = useState("")
+    const [name, setName] = useState(customer.name)
+    const [email, setEmail] = useState(customer.email)
+    const [contactNumber, setContactNumber] = useState(customer.contactNumber)
     const [address, setAddress] = useState("")
     const [pinCode, setPinCode] = useState("")
+    const [bookId, setBookId] = useState("")
 
     const orderHandler = async (event) => {
         event.preventDefault()
-        const userData = { name, email, contactNumber, address, pinCode }
-        dispatch(orderBookHandler(userData, cusToken, bookId))
+        const userData = { name, email, contactNumber, address, pinCode , bookId }
+        dispatch(orderBookHandler(userData, cusToken))
         dispatch(clearErrorHandler())
     }
 
@@ -40,6 +40,7 @@ const Order = () => {
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                 />
+
                 <Input
                     id="email"
                     type="email"
@@ -70,6 +71,13 @@ const Order = () => {
                     label="Pin Code"
                     value={pinCode}
                     onChange={(event) => setPinCode(event.target.value)}
+                />
+                <Input
+                    id="bookId"
+                    element="input"
+                    type="text"
+                    label="Book Id"
+                    onChange={(event) => setBookId(event.target.value)}
                 />
                 <Button type="submit">
                     Purchase

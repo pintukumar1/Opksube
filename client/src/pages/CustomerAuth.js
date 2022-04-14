@@ -15,17 +15,18 @@ const CustomerAuth = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
-    
+    const [contactNumber, setContactNumber] = useState("")
+
     const navigate = useNavigate();
-    
+
     const customerAuthHandler = async (event) => {
         event.preventDefault();
-        
+
         const dataForLogin = {
             email, password
         }
         const dataForRegister = {
-            name, email, password
+            name, email, password, contactNumber
         }
         if (isMember) {
             dispatch(loginCustomerData(dataForLogin))
@@ -34,15 +35,15 @@ const CustomerAuth = () => {
         }
         dispatch(clearErrorHandler())
     };
-    
+
     useEffect(() => {
-        if(customer) {
+        if (customer) {
             setTimeout(() => {
                 navigate("/")
             }, 3000)
         }
     }, [customer, navigate])
-    
+
     return (
         <div>
             {showAlert && <Alert alertText={alertText} />}
@@ -72,6 +73,15 @@ const CustomerAuth = () => {
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                 />
+                {!isMember && <Input
+                    id="contactNumber"
+                    element="input"
+                    label="Contact Number"
+                    type="text"
+                    value={contactNumber}
+                    onChange={(event) => setContactNumber(event.target.value)}
+                />
+                }
                 <Button type="submit">
                     {isMember ? "Login" : "Register"}
                 </Button>

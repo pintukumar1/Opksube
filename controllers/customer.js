@@ -7,9 +7,10 @@ const { BadRequestError, InternalServerError, UnAuthenticatedError } = require("
 const Order = require('../models/order')
 const Book = require("../models/book")
 const Seller = require("../models/seller")
+const { findById } = require('../models/customer')
 
 const register = async (req, res, next) => {
-    const { name, email, password } = req.body
+    const { name, email, password , contactNumber} = req.body
 
     if (!name || !email || !password) {
         const error = new BadRequestError("Please provide all values.")
@@ -40,6 +41,7 @@ const register = async (req, res, next) => {
     const createdCustomer = new Customer({
         name: name,
         email: email,
+        contactNumber : contactNumber ,
         password: hashedPassword
     })
 
@@ -65,7 +67,8 @@ const register = async (req, res, next) => {
         customer: {
             id: createdCustomer.id,
             name: createdCustomer.name,
-            email: createdCustomer.email
+            email: createdCustomer.email,
+            contactNumber: createdCustomer.contactNumber
         },
         token: token
     })
@@ -128,8 +131,7 @@ const login = async (req, res, next) => {
 }
 
 const orderBook = async (req, res, next) => {
-    const { name, email, contactNumber, address, pinCode } = req.body
-    const bookId = req.params.bookId
+    const { name, email, contactNumber, address, pinCode, bookId  } = req.body
     const orderedBy = req.customer.customerId
     if (!name || !email || !contactNumber || !address || !pinCode) {
         const error = new BadRequestError("please provide all values")
@@ -142,7 +144,8 @@ const orderBook = async (req, res, next) => {
         contactNumber,
         address,
         pinCode,
-        orderedBy    
+        orderedBy ,
+        bookId 
     })
     try {
         await newOrder.save()
@@ -150,7 +153,9 @@ const orderBook = async (req, res, next) => {
         const error = new InternalServerError("Could not create order,Please try again...")
         return next(error)
     }
+    let book
     try {
+        book = await Book.findById(bookId)
         const customer = await Customer.findById(req.customer.customerId)
         const seller = await Seller.findOne({books: bookId})
         customer.booksPurchased.push(bookId)
@@ -161,18 +166,19 @@ const orderBook = async (req, res, next) => {
         const error = new InternalServerError("could not create order...")
         return next(error)
     }
-    res.status(StatusCodes.CREATED).json({ msg: "Book ordered successfully & deleted from books db", order: newOrder })
+    res.status(StatusCodes.CREATED).json({ msg: "Book ordered successfully & deleted from books db", order: newOrder, book })
 }
 
 const getOrders = async (req, res, next) => {
     let orders
     try {
-        orders = await Order.find({ orderedBy: req.customer.customerId })
+        orders = await Order.find()
+        .populate("bookId")        
     } catch (err) {
         const error = new InternalServerError("Could not fetch your orders, Please try again...")
         return next(error)
     }
-    res.status(StatusCodes.OK).json({ msg: "orders fetched", orders: orders })
+    res.status(StatusCodes.OK).json({ msg: "orders fetched", orders: orders  })
 }
 
 

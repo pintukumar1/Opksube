@@ -191,7 +191,7 @@ export const loginCustomerData = (currentCustomer) => {
 export const orderBookHandler = (userData, cusToken, bookId) => {
     return async (dispatch) => {
         const orderBook = async () => {
-            const response = await fetch(`/api/customer/orderbook/${bookId}`, {
+            const response = await fetch(`/api/customer/orderbook`, {
                 method: "POST",
                 body: JSON.stringify(userData),
                 headers: {
@@ -207,10 +207,11 @@ export const orderBookHandler = (userData, cusToken, bookId) => {
         }
         try {
             const orderData = await orderBook()
-            const { order } = orderData
+            const { order, book } = orderData
             dispatch(appActions.orderBook({
                 order: order,
-                showAlert: false
+                showAlert: false,
+                books: book
             }))
         } catch (err) {
             dispatch(appActions.errorHandler({
